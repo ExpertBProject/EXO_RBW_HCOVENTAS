@@ -1,0 +1,12 @@
+﻿<Application>
+  <Menus>
+    <action type="add">
+      <Menu Checked="0" Enabled="1" FatherUID="2048" Image="" String="Hco. de Ventas" Type="2" UniqueID="EXO-MnHCOVTA"></Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="EXO-MnHCOVTA" Image="" String="Cargar fichero Hco de ventas" Type="1" UniqueID="EXO-MnCEXCEL"></Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="EXO-MnHCOVTA" Image="" String="Hco. de Ventas" Type="1" UniqueID="EXO-MnHCOVTAS"></Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="2048" Image="" String="Ppto. de Ventas" Type="2" UniqueID="EXO-MnPTOVTA"></Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="EXO-MnPTOVTA" Image="" String="Cargar fichero Pto. de ventas" Type="1" UniqueID="EXO-MnCPPTO"></Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="EXO-MnPTOVTA" Image="" String="Ppto. de Ventas" Type="1" UniqueID="EXO-MnPTOVTAS"></Menu>
+    </action>
+  </Menus>
+</Application>
