@@ -360,16 +360,16 @@ Public Class EXO_CEXCEL
                         objGlobal.SBOApp.StatusBar.SetText("El registro Nº" & iRow & " tiene el cod de IC vacío. Se deja de leer el fichero. ", SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Warning)
                         Exit Sub
                     End If
-                    sICName = worksheet.Cells(iRow, 4).Text
-                    sAnno = worksheet.Cells(iRow, 14).Text : sAnno = Right(sAnno.ToString, 4)
-                    sItemCode = worksheet.Cells(iRow, 5).Text : sItemName = worksheet.Cells(iRow, 6).Text
-                    dCant = worksheet.Cells(iRow, 11).Text.Replace(".", "")
-                    dPrecio = worksheet.Cells(iRow, 12).Text.Replace(".", "").Replace(",", ".").Replace("€", "")
-                    dImp = worksheet.Cells(iRow, 13).Text.Replace(".", "").Replace(",", ".").Replace("€", "")
-                    sDivision = worksheet.Cells(iRow, 7).Text
-                    sComercial = worksheet.Cells(iRow, 15).Text
-                    sPais = worksheet.Cells(iRow, 16).Text.ToUpper
-                    sProvincia = worksheet.Cells(iRow, 17).Text
+                    sICName = worksheet.Cells(iRow, 2).Text
+                    sAnno = worksheet.Cells(iRow, 9).Text : sAnno = Right(sAnno.ToString, 4)
+                    sItemCode = worksheet.Cells(iRow, 3).Text : sItemName = worksheet.Cells(iRow, 4).Text
+                    dCant = worksheet.Cells(iRow, 6).Text.Replace(".", "")
+                    dPrecio = worksheet.Cells(iRow, 7).Text.Replace(".", "").Replace(",", ".").Replace("€", "")
+                    dImp = worksheet.Cells(iRow, 8).Text.Replace(".", "").Replace(",", ".").Replace("€", "")
+                    sDivision = worksheet.Cells(iRow, 5).Text
+                    sComercial = worksheet.Cells(iRow, 10).Text
+                    sPais = worksheet.Cells(iRow, 11).Text.ToUpper
+                    sProvincia = worksheet.Cells(iRow, 12).Text
                     'Buscamos si existe el IC
                     sExiste = EXO_GLOBALES.GetValueDB(objGlobal.compañia, """OCRD""", """CardCode""", """CardCode""='" & sICCod & "' ")
                     If sExiste = "" Then

@@ -50,6 +50,20 @@ Public Class EXO_PPTOS
                     Case "EXO-MnPTOVTAS"
                         'Cargamos UDO
                         objGlobal.funcionesUI.cargaFormUdoBD("EXO_PPTOS")
+                    Case "1282"
+                        oForm = objGlobal.SBOApp.Forms.ActiveForm
+                        If oForm.Visible = True Then
+                            CargaCombos(oForm)
+
+                            Dim oItem As SAPbouiCOM.Item
+                            oItem = oForm.Items.Item("cmdDupli")
+                            oItem.SetAutoManagedAttribute(SAPbouiCOM.BoAutoManagedAttr.ama_Editable, SAPbouiCOM.BoAutoFormMode.afm_Find, SAPbouiCOM.BoModeVisualBehavior.mvb_False)
+                            oItem.SetAutoManagedAttribute(SAPbouiCOM.BoAutoManagedAttr.ama_Editable, SAPbouiCOM.BoAutoFormMode.afm_Add, SAPbouiCOM.BoModeVisualBehavior.mvb_False)
+                            oItem.SetAutoManagedAttribute(SAPbouiCOM.BoAutoManagedAttr.ama_Editable, SAPbouiCOM.BoAutoFormMode.afm_Ok, SAPbouiCOM.BoModeVisualBehavior.mvb_True)
+
+                            CType(oForm.Items.Item("13_U_E").Specific, SAPbouiCOM.EditText).Active = True
+                        End If
+
                 End Select
             End If
 
@@ -76,15 +90,19 @@ Public Class EXO_PPTOS
             sSQL = " Select ""ItmsGrpCod"" FROM ""OITM"" WHERE ""ItemCode""='" & sArticulo & "' "
             oRs.DoQuery(sSQL)
             If oRs.RecordCount > 0 Then
+                Dim sValor As String = oRs.Fields.Item("ItmsGrpCod").Value.ToString
                 oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_DIV", iLinea - 1, oRs.Fields.Item("ItmsGrpCod").Value.ToString)
+                'CType(CType(oForm.Items.Item("0_U_G").Specific, SAPbouiCOM.Matrix).Columns.Item("C_0_3").Cells.Item(iLinea).Specific, SAPbouiCOM.ComboBox).Select(sValor, BoSearchKey.psk_ByValue)
             End If
-            'CType(oForm.Items.Item("0_U_G").Specific, SAPbouiCOM.Matrix).FlushToDataSource()
+
             CargaDatoDivision = True
 
         Catch exCOM As System.Runtime.InteropServices.COMException
-            Throw exCOM
+            oForm.Freeze(False)
+            'Throw exCOM
         Catch ex As Exception
-            Throw ex
+            oForm.Freeze(False)
+            ' Throw ex
         Finally
             oForm.Freeze(False)
             EXO_CleanCOM.CLiberaCOM.liberaCOM(CType(oRs, Object))
@@ -355,7 +373,7 @@ Public Class EXO_PPTOS
     Private Function EventHandler_VALIDATE_After(ByRef objGlobal As EXO_UIAPI.EXO_UIAPI, ByRef pVal As ItemEvent) As Boolean
         Dim oForm As SAPbouiCOM.Form = Nothing
         Dim sTable_Origen As String = ""
-        Dim sAnno As String = "" : Dim sIC As String = ""
+        Dim sAnno As String = "" : Dim sIC As String = "" : Dim sTipo As String = ""
         EventHandler_VALIDATE_After = False
 
         Try
@@ -364,7 +382,8 @@ Public Class EXO_PPTOS
             If pVal.ItemUID = "13_U_E" Or pVal.ItemUID = "14_U_E" Then
                 sAnno = oForm.DataSources.DBDataSources.Item(sTable_Origen).GetValue("U_EXO_ANNO", 0).ToString
                 sIC = oForm.DataSources.DBDataSources.Item(sTable_Origen).GetValue("U_EXO_CARDCODE", 0).ToString
-                oForm.DataSources.DBDataSources.Item(sTable_Origen).SetValue("Code", 0, sIC & "_" & sAnno)
+                sTipo = oForm.DataSources.DBDataSources.Item(sTable_Origen).GetValue("U_EXO_TIPO", 0).ToString
+                oForm.DataSources.DBDataSources.Item(sTable_Origen).SetValue("Code", 0, sIC & "_" & sTipo & "_" & sAnno)
             ElseIf pVal.ItemUID = "0_U_G" And (pVal.ColUID = "C_0_4" Or pVal.ColUID = "C_0_6") Then
                 'Si cambia cantidad A o precio debe multiplicar y ponerlo en los importes
                 Dim dCantidad As Double = 0 : Dim dPrecio As Double = 0 : Dim dImporte As Double = 0
@@ -372,10 +391,12 @@ Public Class EXO_PPTOS
                 dPrecio = EXO_GLOBALES.DblTextToNumber(objGlobal.compañia, CType(CType(oForm.Items.Item("0_U_G").Specific, SAPbouiCOM.Matrix).Columns.Item("C_0_6").Cells.Item(pVal.Row).Specific, SAPbouiCOM.EditText).Value)
                 dImporte = dCantidad * dPrecio
                 CType(CType(oForm.Items.Item("0_U_G").Specific, SAPbouiCOM.Matrix).Columns.Item("C_0_7").Cells.Item(pVal.Row).Specific, SAPbouiCOM.EditText).Value = EXO_GLOBALES.DblNumberToText(objGlobal.compañia, dImporte, 2)
+                ' oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_IMP", pVal.Row - 1, EXO_GLOBALES.DblNumberToText(objGlobal.compañia, dImporte, 2))
+                CType(CType(oForm.Items.Item("0_U_G").Specific, SAPbouiCOM.Matrix).Columns.Item("C_0_7").Cells.Item(pVal.Row).Specific, SAPbouiCOM.EditText).Active = True
+                CType(CType(oForm.Items.Item("0_U_G").Specific, SAPbouiCOM.Matrix).Columns.Item("C_0_6").Cells.Item(pVal.Row).Specific, SAPbouiCOM.EditText).Active = True
             End If
 
             EventHandler_VALIDATE_After = True
-
 
         Catch exCOM As System.Runtime.InteropServices.COMException
             objGlobal.Mostrar_Error(exCOM, EXO_UIAPI.EXO_UIAPI.EXO_TipoMensaje.Excepcion)
@@ -383,7 +404,6 @@ Public Class EXO_PPTOS
             objGlobal.Mostrar_Error(ex, EXO_UIAPI.EXO_UIAPI.EXO_TipoMensaje.Excepcion)
         Finally
             oForm.Freeze(False)
-
         End Try
     End Function
     Private Function EventHandler_FORM_VISIBLE(ByRef objGlobal As EXO_UIAPI.EXO_UIAPI, ByRef pVal As ItemEvent) As Boolean
@@ -448,9 +468,12 @@ Public Class EXO_PPTOS
                     Try
                         oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_ITEMNAME", pVal.Row - 1, oDataTable.GetValue("ItemName", 0).ToString)
                         CargaDatoDivision(oForm, pVal.Row)
-                        CargaDatoPrecio(oForm, pVal.Row)
+                        'CargaDatoPrecio(oForm, pVal.Row)
+                        CType(CType(oForm.Items.Item("0_U_G").Specific, SAPbouiCOM.Matrix).Columns.Item("C_0_3").Cells.Item(pVal.Row).Specific, SAPbouiCOM.ComboBox).Item.Enabled = True
+                        'CType(CType(oForm.Items.Item("0_U_G").Specific, SAPbouiCOM.Matrix).Columns.Item("C_0_3").Cells.Item(pVal.Row).Specific, SAPbouiCOM.ComboBox).Active = True
                     Catch ex As Exception
                         oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_ITEMNAME", pVal.Row - 1, oDataTable.GetValue("ItemName", 0).ToString)
+                        CargaDatoDivision(oForm, pVal.Row)
                     End Try
                 End If
             ElseIf pVal.ItemUID = "0_U_G" AndAlso pVal.ChooseFromListUID = "CFLART2" Then
@@ -458,9 +481,11 @@ Public Class EXO_PPTOS
                     Try
                         oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_ITEMCODE", pVal.Row - 1, oDataTable.GetValue("ItemCode", 0).ToString)
                         CargaDatoDivision(oForm, pVal.Row)
-                        CargaDatoPrecio(oForm, pVal.Row)
+                        'CargaDatoPrecio(oForm, pVal.Row)
+                        CType(CType(oForm.Items.Item("0_U_G").Specific, SAPbouiCOM.Matrix).Columns.Item("C_0_3").Cells.Item(pVal.Row).Specific, SAPbouiCOM.ComboBox).Active = True
                     Catch ex As Exception
                         oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_ITEMCODE", pVal.Row - 1, oDataTable.GetValue("ItemCode", 0).ToString)
+                        CargaDatoDivision(oForm, pVal.Row)
                     End Try
                 End If
             End If

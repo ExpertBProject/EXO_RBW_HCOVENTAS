@@ -180,10 +180,10 @@
                 iCode += 1
                 sFecha = Now.Year.ToString("0000") & Now.Month.ToString("00") & Now.Day.ToString("00") : sHora = Now.Hour.ToString("00") & Now.Minute.ToString("00")
                 sSQL = "insert into ""@EXO_PPTOSLOG""(""Code"",""U_EXO_CODE"", ""U_EXO_LINEA"", ""U_EXO_LinId"", ""U_EXO_ACCION"",""U_EXO_FECHA"",""U_EXO_HORA"", ""U_EXO_ITEMCODE"","
-                sSQL &= " ""U_EXO_ITEMNAME"",""U_EXO_DIV"",""U_EXO_CANTA"", ""U_EXO_CANTB"", ""U_EXO_PRECIO"", ""U_EXO_IMP"", ""U_EXO_PERIODO"", ""U_EXO_PAIS"", ""U_EXO_PROVINCIA"") "
+                sSQL &= " ""U_EXO_ITEMNAME"",""U_EXO_DIV"",""U_EXO_CANTA"",  ""U_EXO_PRECIO"", ""U_EXO_IMP"", ""U_EXO_PERIODO"", ""U_EXO_PAIS"", ""U_EXO_PROVINCIA"") "
                 sSQL &= " VALUES (" & iCode.ToString & ", '" & oRsLOG.Fields.Item("Code").Value.ToString & "'," & oRsLOG.Fields.Item("LineId").Value.ToString & ", 0, 'C', '" & sFecha & "'," & sHora & ","
                 sSQL &= "'" & oRsLOG.Fields.Item("U_EXO_ITEMCODE").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_ITEMNAME").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_DIV").Value.ToString & "', "
-                sSQL &= oRsLOG.Fields.Item("U_EXO_CANTA").Value.ToString & ", " & oRsLOG.Fields.Item("U_EXO_CANTB").Value.ToString & ", " & oRsLOG.Fields.Item("U_EXO_PRECIO").Value.ToString & ", "
+                sSQL &= oRsLOG.Fields.Item("U_EXO_CANTA").Value.ToString & ", " & oRsLOG.Fields.Item("U_EXO_PRECIO").Value.ToString & ", "
                 Dim dPeriodo As Date = CDate(oRsLOG.Fields.Item("U_EXO_PERIODO").Value.ToString)
                 sSQL &= oRsLOG.Fields.Item("U_EXO_IMP").Value.ToString & ", '" & dPeriodo.Year.ToString("0000") & dPeriodo.Month.ToString("00") & dPeriodo.Day.ToString("00") & "', "
                 sSQL &= "'" & oRsLOG.Fields.Item("U_EXO_PAIS").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_PROVINCIA").Value.ToString & "')"
@@ -224,20 +224,20 @@
 
                 If iVersion = 0 And sAccion = "" Then
                     sSQL = "insert into ""@EXO_PPTOSLOG""(""Code"",""U_EXO_CODE"", ""U_EXO_LINEA"", ""U_EXO_LinId"", ""U_EXO_ACCION"",""U_EXO_FECHA"",""U_EXO_HORA"", ""U_EXO_ITEMCODE"","
-                    sSQL &= " ""U_EXO_ITEMNAME"",""U_EXO_DIV"",""U_EXO_CANTA"", ""U_EXO_CANTB"", ""U_EXO_PRECIO"", ""U_EXO_IMP"", ""U_EXO_PERIODO"", ""U_EXO_PAIS"", ""U_EXO_PROVINCIA"") "
+                    sSQL &= " ""U_EXO_ITEMNAME"",""U_EXO_DIV"",""U_EXO_CANTA"", ""U_EXO_PRECIO"", ""U_EXO_IMP"", ""U_EXO_PERIODO"", ""U_EXO_PAIS"", ""U_EXO_PROVINCIA"") "
                     sSQL &= " VALUES (" & iCode.ToString & ", '" & oRs.Fields.Item("Code").Value.ToString & "'," & oRs.Fields.Item("LineId").Value.ToString & ", 0, 'C', '" & sFecha & "'," & sHora & ","
                     sSQL &= "'" & oRs.Fields.Item("U_EXO_ITEMCODE").Value.ToString & "', '" & oRs.Fields.Item("U_EXO_ITEMNAME").Value.ToString & "', '" & oRs.Fields.Item("U_EXO_DIV").Value.ToString & "', "
-                    sSQL &= oRs.Fields.Item("U_EXO_CANTA").Value.ToString & ", " & oRs.Fields.Item("U_EXO_CANTB").Value.ToString & ", " & oRs.Fields.Item("U_EXO_PRECIO").Value.ToString & ", "
+                    sSQL &= oRs.Fields.Item("U_EXO_CANTA").Value.ToString & ", " & oRs.Fields.Item("U_EXO_PRECIO").Value.ToString & ", "
                     Dim dPeriodo As Date = CDate(oRs.Fields.Item("U_EXO_PERIODO").Value.ToString)
                     sSQL &= oRs.Fields.Item("U_EXO_IMP").Value.ToString & ", '" & dPeriodo.Year.ToString("0000") & dPeriodo.Month.ToString("00") & dPeriodo.Day.ToString("00") & "', "
                     sSQL &= "'" & oRs.Fields.Item("U_EXO_PAIS").Value.ToString & "', '" & oRs.Fields.Item("U_EXO_PROVINCIA").Value.ToString & "')"
                 Else
                     iVersion += 1
                     sSQL = "insert into ""@EXO_PPTOSLOG""(""Code"",""U_EXO_CODE"", ""U_EXO_LINEA"", ""U_EXO_LinId"", ""U_EXO_ACCION"",""U_EXO_FECHA"",""U_EXO_HORA"", ""U_EXO_ITEMCODE"","
-                    sSQL &= " ""U_EXO_ITEMNAME"",""U_EXO_DIV"",""U_EXO_CANTA"", ""U_EXO_CANTB"", ""U_EXO_PRECIO"", ""U_EXO_IMP"", ""U_EXO_PERIODO"", ""U_EXO_PAIS"", ""U_EXO_PROVINCIA"") "
+                    sSQL &= " ""U_EXO_ITEMNAME"",""U_EXO_DIV"",""U_EXO_CANTA"",  ""U_EXO_PRECIO"", ""U_EXO_IMP"", ""U_EXO_PERIODO"", ""U_EXO_PAIS"", ""U_EXO_PROVINCIA"") "
                     sSQL &= " VALUES (" & iCode.ToString & ", '" & oRs.Fields.Item("Code").Value.ToString & "'," & oRs.Fields.Item("LineId").Value.ToString & ", " & iVersion.ToString & ", 'M', '" & sFecha & "'," & sHora & ","
                     sSQL &= "'" & oRs.Fields.Item("U_EXO_ITEMCODE").Value.ToString & "', '" & oRs.Fields.Item("U_EXO_ITEMNAME").Value.ToString & "', '" & oRs.Fields.Item("U_EXO_DIV").Value.ToString & "', "
-                    sSQL &= oRs.Fields.Item("U_EXO_CANTA").Value.ToString & ", " & oRs.Fields.Item("U_EXO_CANTB").Value.ToString & ", " & oRs.Fields.Item("U_EXO_PRECIO").Value.ToString & ", "
+                    sSQL &= oRs.Fields.Item("U_EXO_CANTA").Value.ToString & ", " & oRs.Fields.Item("U_EXO_PRECIO").Value.ToString & ", "
                     Dim dPeriodo As Date = CDate(oRs.Fields.Item("U_EXO_PERIODO").Value.ToString)
                     sSQL &= oRs.Fields.Item("U_EXO_IMP").Value.ToString & ", '" & dPeriodo.Year.ToString("0000") & dPeriodo.Month.ToString("00") & dPeriodo.Day.ToString("00") & "', "
                     sSQL &= "'" & oRs.Fields.Item("U_EXO_PAIS").Value.ToString & "', '" & oRs.Fields.Item("U_EXO_PROVINCIA").Value.ToString & "')"
@@ -275,10 +275,10 @@
                 iVersion = oObjGlobal.refDi.SQL.sqlNumericaB1(sSQL) : iVersion += 1
                 sFecha = Now.Year.ToString("0000") & Now.Month.ToString("00") & Now.Day.ToString("00") : sHora = Now.Hour.ToString("00") & Now.Minute.ToString("00")
                 sSQL = "insert into ""@EXO_PPTOSLOG""(""Code"",""U_EXO_CODE"", ""U_EXO_LINEA"", ""U_EXO_LinId"", ""U_EXO_ACCION"",""U_EXO_FECHA"",""U_EXO_HORA"", ""U_EXO_ITEMCODE"","
-                sSQL &= " ""U_EXO_ITEMNAME"",""U_EXO_DIV"",""U_EXO_CANTA"", ""U_EXO_CANTB"", ""U_EXO_PRECIO"", ""U_EXO_IMP"", ""U_EXO_PERIODO"", ""U_EXO_PAIS"", ""U_EXO_PROVINCIA"",""U_EXO_ACEPTADO"") "
+                sSQL &= " ""U_EXO_ITEMNAME"",""U_EXO_DIV"",""U_EXO_CANTA"",  ""U_EXO_PRECIO"", ""U_EXO_IMP"", ""U_EXO_PERIODO"", ""U_EXO_PAIS"", ""U_EXO_PROVINCIA"",""U_EXO_ACEPTADO"") "
                 sSQL &= " VALUES (" & iCode.ToString & ", '" & oRs.Fields.Item("Code").Value.ToString & "'," & oRs.Fields.Item("LineId").Value.ToString & ", " & iVersion.ToString & ", 'B', '" & sFecha & "'," & sHora & ","
                 sSQL &= "'" & oRs.Fields.Item("U_EXO_ITEMCODE").Value.ToString & "', '" & oRs.Fields.Item("U_EXO_ITEMNAME").Value.ToString & "', '" & oRs.Fields.Item("U_EXO_DIV").Value.ToString & "', "
-                sSQL &= oRs.Fields.Item("U_EXO_CANTA").Value.ToString & ", " & oRs.Fields.Item("U_EXO_CANTB").Value.ToString & ", " & oRs.Fields.Item("U_EXO_PRECIO").Value.ToString & ", "
+                sSQL &= oRs.Fields.Item("U_EXO_CANTA").Value.ToString & ", " & oRs.Fields.Item("U_EXO_PRECIO").Value.ToString & ", "
                 Dim dPeriodo As Date = CDate(oRs.Fields.Item("U_EXO_PERIODO").Value.ToString)
                 sSQL &= oRs.Fields.Item("U_EXO_IMP").Value.ToString & ", '" & dPeriodo.Year.ToString("0000") & dPeriodo.Month.ToString("00") & dPeriodo.Day.ToString("00") & "', "
                 sSQL &= "'" & oRs.Fields.Item("U_EXO_PAIS").Value.ToString & "', '" & oRs.Fields.Item("U_EXO_PROVINCIA").Value.ToString & "','N')"

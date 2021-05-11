@@ -179,6 +179,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "E:\Desarrollo\Git\Oscar\RIBAWOOD\EXO_RBW_HCOVENTAS\EXO_RBW_HCOVENTAS\EXO_RBW_HCOVENTAS\bin\x64\Debug\EXO_RBW_HCOVENTAS.dll" "E:\Desarrollo\Cliente\9.1.0.43\x64\DLLs\$(TargetFileName)"
+copy "E:\Desarrollo\Git\Oscar\RIBAWOOD\EXO_RBW_HCOVENTAS\EXO_RBW_HCOVENTAS\EXO_RBW_HCOVENTAS\bin\x64\Debug\EXO_RBW_HCOVENTAS.dll" "E:\Desarrollo\Cliente\9.1.0.43\x64\EXT\$(TargetFileName)"
 copy "E:\Desarrollo\Git\Oscar\RIBAWOOD\EXO_RBW_HCOVENTAS\EXO_RBW_HCOVENTAS\EXO_RBW_HCOVENTAS\bin\x64\Debug\EXO_RBW_HCOVENTAS.dll" "\\xper-rdpdes01\Ficheros\Ribawood\10.Dll_64\EXT\$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
