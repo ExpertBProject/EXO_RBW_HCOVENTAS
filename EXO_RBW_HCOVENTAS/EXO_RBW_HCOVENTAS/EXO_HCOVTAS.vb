@@ -207,7 +207,7 @@ Public Class EXO_HCOVTAS
 
         Try
             oForm = objGlobal.SBOApp.Forms.Item(pVal.FormUID)
-            If pVal.ItemUID = "13_U_E" Or pVal.ItemUID = "14_U_E" Then
+            If (pVal.ItemUID = "13_U_E" Or pVal.ItemUID = "14_U_E") And oForm.Mode = BoFormMode.fm_ADD_MODE Then
                 sTable_Origen = CType(oForm.Items.Item("0_U_E").Specific, SAPbouiCOM.EditText).DataBind.TableName
                 sAnno = oForm.DataSources.DBDataSources.Item(sTable_Origen).GetValue("U_EXO_ANNO", 0).ToString
                 sIC = oForm.DataSources.DBDataSources.Item(sTable_Origen).GetValue("U_EXO_CARDCODE", 0).ToString
@@ -275,7 +275,7 @@ Public Class EXO_HCOVTAS
             Dim oDataTable As DataTable
             sTable_Origen = CType(oForm.Items.Item("0_U_E").Specific, SAPbouiCOM.EditText).DataBind.TableName
             oDataTable = oCFLEvento.SelectedObjects
-            If pVal.ItemUID = "14_U_E" AndAlso pVal.ChooseFromListUID = "CFL_IC" Then
+            If pVal.ItemUID = "14_U_E" AndAlso pVal.ChooseFromListUID = "CFL_IC" AndAlso (oForm.Mode = BoFormMode.fm_ADD_MODE Or oForm.Mode = BoFormMode.fm_UPDATE_MODE) Then
                 If oDataTable IsNot Nothing Then
                     Try
                         oForm.DataSources.DBDataSources.Item(sTable_Origen).SetValue("U_EXO_CARDNAME", 0, oDataTable.GetValue("CardName", 0).ToString)

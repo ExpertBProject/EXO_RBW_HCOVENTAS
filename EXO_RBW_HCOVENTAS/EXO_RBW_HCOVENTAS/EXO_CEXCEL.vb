@@ -322,8 +322,10 @@ Public Class EXO_CEXCEL
             oForm.Freeze(True)
 
         Catch exCOM As System.Runtime.InteropServices.COMException
+            oForm.Freeze(False)
             Throw exCOM
         Catch ex As Exception
+            oForm.Freeze(False)
             Throw ex
         Finally
             oForm.Freeze(False)
@@ -355,7 +357,7 @@ Public Class EXO_CEXCEL
                 Dim startCell As ExcelCellAddress = worksheet.Dimension.Start
                 Dim endCell As ExcelCellAddress = worksheet.Dimension.End
                 For iRow As Integer = 2 To endCell.Row
-                    sICCod = worksheet.Cells(iRow, 3).Text
+                    sICCod = worksheet.Cells(iRow, 1).Text
                     If sICCod = "" Then
                         objGlobal.SBOApp.StatusBar.SetText("El registro Nº" & iRow & " tiene el cod de IC vacío. Se deja de leer el fichero. ", SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Warning)
                         Exit Sub
@@ -457,7 +459,7 @@ Public Class EXO_CEXCEL
             EXO_CleanCOM.CLiberaCOM.liberaCOM(CType(oDI_COM, Object))
         End Try
     End Sub
-    Private Function CrearCamposLíneas(ByRef oDI_COM As EXO_DIAPI.EXO_UDOEntity, ByVal sCodigo As String, ByVal sItemCode As String, ByVal sItemName As String, ByVal sDiv As String, ByVal dCant As Double,
+    Private Sub CrearCamposLíneas(ByRef oDI_COM As EXO_DIAPI.EXO_UDOEntity, ByVal sCodigo As String, ByVal sItemCode As String, ByVal sItemName As String, ByVal sDiv As String, ByVal dCant As Double,
                                        ByVal dPrecio As Double, ByVal dImp As Double, ByVal sComercial As String, ByVal sPais As String, ByVal sProvincia As String)
         Try
             oDI_COM.GetNewChild("EXO_HCOVTASL")
@@ -473,5 +475,5 @@ Public Class EXO_CEXCEL
         Catch ex As Exception
             Throw ex
         End Try
-    End Function
+    End Sub
 End Class
