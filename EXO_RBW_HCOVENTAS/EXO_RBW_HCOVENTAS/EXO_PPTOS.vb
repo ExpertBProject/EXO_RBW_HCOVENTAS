@@ -166,6 +166,12 @@ Public Class EXO_PPTOS
                 objGlobal.funcionesUI.cargaCombo(CType(oForm.Items.Item("0_U_G").Specific, SAPbouiCOM.Matrix).Columns.Item("C_0_10").ValidValues, sSQL)
             End If
 
+            'Comercial
+            sSQL = " Select ""SlpCode"",""SlpName"" FROM ""OSLP"" Order by ""SlpName"" "
+            oRs.DoQuery(sSQL)
+            If oRs.RecordCount > 0 Then
+                objGlobal.funcionesUI.cargaCombo(CType(oForm.Items.Item("0_U_G").Specific, SAPbouiCOM.Matrix).Columns.Item("C_0_11").ValidValues, sSQL)
+            End If
             CargaCombos = True
 
         Catch exCOM As System.Runtime.InteropServices.COMException

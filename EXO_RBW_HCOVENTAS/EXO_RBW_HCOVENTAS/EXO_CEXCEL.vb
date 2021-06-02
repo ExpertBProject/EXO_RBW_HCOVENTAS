@@ -338,7 +338,7 @@ Public Class EXO_CEXCEL
     Private Sub TratarFichero_Excel(ByVal sArchivo As String, ByRef oForm As SAPbouiCOM.Form)
 #Region "Variables"
         Dim pck As ExcelPackage = Nothing
-        Dim sAnno As String = "" : Dim sICCod As String = "" : Dim sICName As String = ""
+        Dim sAnno As String = "" : Dim sPeriodo As String = "" : Dim sICCod As String = "" : Dim sICName As String = ""
         Dim sItemCode As String = "" : Dim sItemName As String = "" : Dim sDivision As String = ""
         Dim sComercial As String = "" : Dim sPais As String = "" : Dim sProvincia As String = ""
         Dim dCant As Double = 0 : Dim dPrecio As Double = 0 : Dim dImp As Double = 0
@@ -362,13 +362,14 @@ Public Class EXO_CEXCEL
                         objGlobal.SBOApp.StatusBar.SetText("El registro Nº" & iRow & " tiene el cod de IC vacío. Se deja de leer el fichero. ", SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Warning)
                         Exit Sub
                     End If
-                    sICName = worksheet.Cells(iRow, 2).Text
+                    sICName = worksheet.Cells(iRow, 2).Text.Replace(",", "")
                     sAnno = worksheet.Cells(iRow, 9).Text : sAnno = Right(sAnno.ToString, 4)
-                    sItemCode = worksheet.Cells(iRow, 3).Text : sItemName = worksheet.Cells(iRow, 4).Text
+                    sItemCode = worksheet.Cells(iRow, 3).Text : sItemName = worksheet.Cells(iRow, 4).Text.Replace(",", "")
                     dCant = worksheet.Cells(iRow, 6).Text.Replace(".", "")
                     dPrecio = worksheet.Cells(iRow, 7).Text.Replace(".", "").Replace(",", ".").Replace("€", "")
                     dImp = worksheet.Cells(iRow, 8).Text.Replace(".", "").Replace(",", ".").Replace("€", "")
                     sDivision = worksheet.Cells(iRow, 5).Text
+                    sPeriodo = worksheet.Cells(iRow, 9).Text
                     sComercial = worksheet.Cells(iRow, 10).Text
                     sPais = worksheet.Cells(iRow, 11).Text.ToUpper
                     sProvincia = worksheet.Cells(iRow, 12).Text
@@ -420,7 +421,7 @@ Public Class EXO_CEXCEL
                                 oRs.DoQuery(sSQL)
                                 If oRs.RecordCount > 0 Then
                                     oDI_COM.GetByKey(sCode)
-                                    CrearCamposLíneas(oDI_COM, sCode, sItemCode, sItemName, sDivision, dCant, dPrecio, dImp, sComercial, sPais, sProvincia)
+                                    CrearCamposLíneas(oDI_COM, sCode, sItemCode, sItemName, sDivision, dCant, dPrecio, dImp, sPeriodo, sComercial, sPais, sProvincia)
                                     If oDI_COM.UDO_Update = False Then
                                         Throw New Exception("(EXO) - Error al añadir registro Nº" & iRow.ToString & ". " & oDI_COM.GetLastError)
                                     End If
@@ -430,7 +431,7 @@ Public Class EXO_CEXCEL
                                     oDI_COM.SetValue("U_EXO_ANNO") = sAnno
                                     oDI_COM.SetValue("U_EXO_CARDCODE") = sICCod
                                     oDI_COM.SetValue("U_EXO_CARDNAME") = sICName
-                                    CrearCamposLíneas(oDI_COM, sCode, sItemCode, sItemName, sDivision, dCant, dPrecio, dImp, sComercial, sPais, sProvincia)
+                                    CrearCamposLíneas(oDI_COM, sCode, sItemCode, sItemName, sDivision, dCant, dPrecio, dImp, sPeriodo, sComercial, sPais, sProvincia)
                                     If oDI_COM.UDO_Add = False Then
                                         Throw New Exception("(EXO) - Error al añadir registro Nº" & iRow.ToString & ". " & oDI_COM.GetLastError)
                                     End If
@@ -460,7 +461,7 @@ Public Class EXO_CEXCEL
         End Try
     End Sub
     Private Sub CrearCamposLíneas(ByRef oDI_COM As EXO_DIAPI.EXO_UDOEntity, ByVal sCodigo As String, ByVal sItemCode As String, ByVal sItemName As String, ByVal sDiv As String, ByVal dCant As Double,
-                                       ByVal dPrecio As Double, ByVal dImp As Double, ByVal sComercial As String, ByVal sPais As String, ByVal sProvincia As String)
+                                       ByVal dPrecio As Double, ByVal dImp As Double, ByVal sPeriodo As String, ByVal sComercial As String, ByVal sPais As String, ByVal sProvincia As String)
         Try
             oDI_COM.GetNewChild("EXO_HCOVTASL")
             oDI_COM.SetValueChild("U_EXO_ITEMCODE") = sItemCode
@@ -469,6 +470,8 @@ Public Class EXO_CEXCEL
             oDI_COM.SetValueChild("U_EXO_CANT") = dCant
             oDI_COM.SetValueChild("U_EXO_PRECIO") = dPrecio
             oDI_COM.SetValueChild("U_EXO_IMP") = dImp
+            Dim dFecha As Date = CDate(sPeriodo)
+            oDI_COM.SetValueChild("U_EXO_PERIODO") = sPeriodo
             oDI_COM.SetValueChild("U_EXO_COMERCIAL") = sComercial
             oDI_COM.SetValueChild("U_EXO_PAIS") = sPais
             oDI_COM.SetValueChild("U_EXO_PROVINCIA") = sProvincia

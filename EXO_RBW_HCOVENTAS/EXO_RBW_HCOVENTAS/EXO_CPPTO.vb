@@ -336,7 +336,7 @@ Public Class EXO_CPPTO
     Private Sub TratarFichero_Excel(ByVal sArchivo As String, ByRef oForm As SAPbouiCOM.Form)
 #Region "Variables"
         Dim pck As ExcelPackage = Nothing
-        Dim sTipo As String = "" : Dim sAnno As String = "" : Dim sICCod As String = "" : Dim sICName As String = ""
+        Dim sTipo As String = "" : Dim sAnno As String = "" : Dim sICCod As String = "" : Dim sICName As String = "" : Dim sComercial As String = ""
         Dim sItemCode As String = "" : Dim sItemName As String = "" : Dim sDivision As String = ""
         Dim sPeriodo As String = "" : Dim sPais As String = "" : Dim sProvincia As String = ""
         Dim dCantA As Double = 0 : Dim dCantB As Double = 0 : Dim dPrecio As Double = 0 : Dim dImp As Double = 0
@@ -364,14 +364,15 @@ Public Class EXO_CPPTO
                         objGlobal.SBOApp.StatusBar.SetText("El registro Nº" & iRow & " tiene el cod de IC vacío. Se deja de leer el fichero. ", SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Warning)
                         Exit Sub
                     End If
-                    sICName = worksheet.Cells(iRow, 3).Text
+                    sICName = worksheet.Cells(iRow, 3).Text.Replace(",", "")
                     sAnno = worksheet.Cells(iRow, 10).Text : sAnno = Right(sAnno.ToString, 4)
-                    sItemCode = worksheet.Cells(iRow, 4).Text : sItemName = worksheet.Cells(iRow, 5).Text
+                    sItemCode = worksheet.Cells(iRow, 4).Text : sItemName = worksheet.Cells(iRow, 5).Text.Replace(",", "")
                     dCantA = worksheet.Cells(iRow, 7).Text.Replace(".", "")
                     dPrecio = worksheet.Cells(iRow, 8).Text.Replace(".", "").Replace(",", ".").Replace("€", "")
                     dImp = worksheet.Cells(iRow, 9).Text.Replace(".", "").Replace(",", ".").Replace("€", "")
                     sDivision = worksheet.Cells(iRow, 6).Text
                     sPeriodo = worksheet.Cells(iRow, 10).Text
+                    sComercial = worksheet.Cells(iRow, 11).Text
                     sPais = worksheet.Cells(iRow, 12).Text.ToUpper
                     sProvincia = worksheet.Cells(iRow, 13).Text
                     'Buscamos si existe el IC
@@ -388,14 +389,14 @@ Public Class EXO_CPPTO
                             sExiste = EXO_GLOBALES.GetValueDB(objGlobal.compañia, """OITB""", """ItmsGrpCod""", """ItmsGrpNam""='" & sDivision & "' ")
                             If sExiste <> "" Then
                                 sDivision = sExiste
-                                ''Buscamos el comercial
-                                'sExiste = EXO_GLOBALES.GetValueDB(objGlobal.compañia, """OSLP""", """SlpCode""", """SlpName""='" & sComercial & "' ")
-                                'If sExiste <> "" Then
-                                '    sComercial = sExiste
-                                'Else
-                                '    sComercial = EXO_GLOBALES.GetValueDB(objGlobal.compañia, """OCRD""", """SlpCode""", """CardCode""='" & sICCod & "' ")
-                                '    objGlobal.SBOApp.StatusBar.SetText("El registro Nº" & iRow & " no encuentra el comercial, se le asigna el del cliente - " & sComercial, SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Warning)
-                                'End If
+                                'Buscamos el comercial
+                                sExiste = EXO_GLOBALES.GetValueDB(objGlobal.compañia, """OSLP""", """SlpCode""", """SlpName""='" & sComercial & "' ")
+                                If sExiste <> "" Then
+                                    sComercial = sExiste
+                                Else
+                                    sComercial = EXO_GLOBALES.GetValueDB(objGlobal.compañia, """OCRD""", """SlpCode""", """CardCode""='" & sICCod & "' ")
+                                    objGlobal.SBOApp.StatusBar.SetText("El registro Nº" & iRow & " no encuentra el comercial, se le asigna el del cliente - " & sComercial, SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Warning)
+                                End If
 
                                 'Buscamos el pais
                                 sExiste = EXO_GLOBALES.GetValueDB(objGlobal.compañia, """OCRY""", """Code""", "UPPER(""Name"")='" & sPais & "' ")
@@ -422,7 +423,7 @@ Public Class EXO_CPPTO
                                 oRs.DoQuery(sSQL)
                                 If oRs.RecordCount > 0 Then
                                     oDI_COM.GetByKey(sCode)
-                                    CrearCamposLíneas(oDI_COM, sCode, sItemCode, sItemName, sDivision, dCantA, dPrecio, dImp, sPeriodo, sPais, sProvincia)
+                                    CrearCamposLíneas(oDI_COM, sCode, sItemCode, sItemName, sDivision, dCantA, dPrecio, dImp, sPeriodo, sComercial, sPais, sProvincia)
                                     If oDI_COM.UDO_Update = False Then
                                         Throw New Exception("(EXO) - Error al añadir registro Nº" & iRow.ToString & ". " & oDI_COM.GetLastError)
                                     End If
@@ -433,7 +434,7 @@ Public Class EXO_CPPTO
                                     oDI_COM.SetValue("U_EXO_TIPO") = sTipo.ToUpper.Trim
                                     oDI_COM.SetValue("U_EXO_CARDCODE") = sICCod
                                     oDI_COM.SetValue("U_EXO_CARDNAME") = sICName
-                                    CrearCamposLíneas(oDI_COM, sCode, sItemCode, sItemName, sDivision, dCantA, dPrecio, dImp, sPeriodo, sPais, sProvincia)
+                                    CrearCamposLíneas(oDI_COM, sCode, sItemCode, sItemName, sDivision, dCantA, dPrecio, dImp, sPeriodo, sComercial, sPais, sProvincia)
                                     If oDI_COM.UDO_Add = False Then
                                         Throw New Exception("(EXO) - Error al añadir registro Nº" & iRow.ToString & ". " & oDI_COM.GetLastError)
                                     End If
@@ -447,13 +448,13 @@ Public Class EXO_CPPTO
                                     iCode += 1
                                     sFecha = Now.Year.ToString("0000") & Now.Month.ToString("00") & Now.Day.ToString("00") : sHora = Now.Hour.ToString("00") & Now.Minute.ToString("00")
                                     sSQL = "insert into ""@EXO_PPTOSLOG""(""Code"",""U_EXO_CODE"", ""U_EXO_LINEA"", ""U_EXO_LinId"", ""U_EXO_ACCION"",""U_EXO_FECHA"",""U_EXO_HORA"", ""U_EXO_ITEMCODE"","
-                                    sSQL &= " ""U_EXO_ITEMNAME"",""U_EXO_DIV"",""U_EXO_CANTA"", ""U_EXO_PRECIO"", ""U_EXO_IMP"", ""U_EXO_PERIODO"", ""U_EXO_PAIS"", ""U_EXO_PROVINCIA"") "
+                                    sSQL &= " ""U_EXO_ITEMNAME"",""U_EXO_DIV"",""U_EXO_CANTA"", ""U_EXO_PRECIO"", ""U_EXO_IMP"", ""U_EXO_PERIODO"", ""U_EXO_PAIS"", ""U_EXO_PROVINCIA"", ""U_EXO_COMERCIAL"") "
                                     sSQL &= " VALUES (" & iCode.ToString & ", '" & oRsLOG.Fields.Item("Code").Value.ToString & "'," & oRsLOG.Fields.Item("LineId").Value.ToString & ", 0, 'C', '" & sFecha & "'," & sHora & ","
                                     sSQL &= "'" & oRsLOG.Fields.Item("U_EXO_ITEMCODE").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_ITEMNAME").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_DIV").Value.ToString & "', "
                                     sSQL &= oRsLOG.Fields.Item("U_EXO_CANTA").Value.ToString & ", " & oRsLOG.Fields.Item("U_EXO_PRECIO").Value.ToString & ", "
                                     Dim dPeriodo As Date = CDate(oRsLOG.Fields.Item("U_EXO_PERIODO").Value.ToString)
                                     sSQL &= oRsLOG.Fields.Item("U_EXO_IMP").Value.ToString & ", '" & dPeriodo.Year.ToString("0000") & dPeriodo.Month.ToString("00") & dPeriodo.Day.ToString("00") & "', "
-                                    sSQL &= "'" & oRsLOG.Fields.Item("U_EXO_PAIS").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_PROVINCIA").Value.ToString & "')"
+                                    sSQL &= "'" & oRsLOG.Fields.Item("U_EXO_PAIS").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_PROVINCIA").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_COMERCIAL").Value.ToString & "')"
                                     oRsLOGADD.DoQuery(sSQL)
                                 Next
                             Else
@@ -482,7 +483,7 @@ Public Class EXO_CPPTO
         End Try
     End Sub
     Private Sub CrearCamposLíneas(ByRef oDI_COM As EXO_DIAPI.EXO_UDOEntity, ByVal sCodigo As String, ByVal sItemCode As String, ByVal sItemName As String, ByVal sDiv As String, ByVal dCantA As Double,
-                                       ByVal dPrecio As Double, ByVal dImp As Double, ByVal sPeriodo As String, ByVal sPais As String, ByVal sProvincia As String)
+                                       ByVal dPrecio As Double, ByVal dImp As Double, ByVal sPeriodo As String, ByVal sComercial As String, ByVal sPais As String, ByVal sProvincia As String)
         Try
             oDI_COM.GetNewChild("EXO_PPTOSL")
             oDI_COM.SetValueChild("U_EXO_ITEMCODE") = sItemCode
@@ -493,6 +494,7 @@ Public Class EXO_CPPTO
             oDI_COM.SetValueChild("U_EXO_IMP") = dImp
             Dim dFecha As Date = CDate(sPeriodo)
             oDI_COM.SetValueChild("U_EXO_PERIODO") = sPeriodo
+            oDI_COM.SetValueChild("U_EXO_COMERCIAL") = sComercial
             oDI_COM.SetValueChild("U_EXO_PAIS") = sPais
             oDI_COM.SetValueChild("U_EXO_PROVINCIA") = sProvincia
         Catch ex As Exception
