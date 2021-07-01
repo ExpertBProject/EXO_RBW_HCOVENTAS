@@ -52,7 +52,7 @@ Public Class EXO_PPTOS
                         objGlobal.funcionesUI.cargaFormUdoBD("EXO_PPTOS")
                     Case "1282"
                         oForm = objGlobal.SBOApp.Forms.ActiveForm
-                        If oForm.Visible = True Then
+                        If oForm.Visible = True And oForm.TypeEx = "UDO_FT_EXO_PPTOS" Then
                             CargaCombos(oForm)
 
                             Dim oItem As SAPbouiCOM.Item

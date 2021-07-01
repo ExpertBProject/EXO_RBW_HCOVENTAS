@@ -366,8 +366,10 @@ Public Class EXO_CEXCEL
                     sAnno = worksheet.Cells(iRow, 9).Text : sAnno = Right(sAnno.ToString, 4)
                     sItemCode = worksheet.Cells(iRow, 3).Text : sItemName = worksheet.Cells(iRow, 4).Text.Replace(",", "")
                     dCant = worksheet.Cells(iRow, 6).Text.Replace(".", "")
-                    dPrecio = worksheet.Cells(iRow, 7).Text.Replace(".", "").Replace(",", ".").Replace("€", "")
-                    dImp = worksheet.Cells(iRow, 8).Text.Replace(".", "").Replace(",", ".").Replace("€", "")
+                    objGlobal.SBOApp.StatusBar.SetText("Cantidad:" & dCant.ToString & " - " & worksheet.Cells(iRow, 6).Text.Replace(".", ""), SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Warning)
+                    dPrecio = worksheet.Cells(iRow, 7).Text.Replace(".", "").Replace("€", "")
+                    objGlobal.SBOApp.StatusBar.SetText("Precio:" & dPrecio.ToString & " - " & worksheet.Cells(iRow, 7).Text.Replace(".", "").Replace(",", ".").Replace("€", ""), SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Warning)
+                    dImp = worksheet.Cells(iRow, 8).Text.Replace(".", "").Replace("€", "")
                     sDivision = worksheet.Cells(iRow, 5).Text
                     sPeriodo = worksheet.Cells(iRow, 9).Text
                     sComercial = worksheet.Cells(iRow, 10).Text

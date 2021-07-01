@@ -368,8 +368,8 @@ Public Class EXO_CPPTO
                     sAnno = worksheet.Cells(iRow, 10).Text : sAnno = Right(sAnno.ToString, 4)
                     sItemCode = worksheet.Cells(iRow, 4).Text : sItemName = worksheet.Cells(iRow, 5).Text.Replace(",", "")
                     dCantA = worksheet.Cells(iRow, 7).Text.Replace(".", "")
-                    dPrecio = worksheet.Cells(iRow, 8).Text.Replace(".", "").Replace(",", ".").Replace("€", "")
-                    dImp = worksheet.Cells(iRow, 9).Text.Replace(".", "").Replace(",", ".").Replace("€", "")
+                    dPrecio = worksheet.Cells(iRow, 8).Text.Replace(".", "").Replace("€", "")
+                    dImp = worksheet.Cells(iRow, 9).Text.Replace(".", "").Replace("€", "")
                     sDivision = worksheet.Cells(iRow, 6).Text
                     sPeriodo = worksheet.Cells(iRow, 10).Text
                     sComercial = worksheet.Cells(iRow, 11).Text
