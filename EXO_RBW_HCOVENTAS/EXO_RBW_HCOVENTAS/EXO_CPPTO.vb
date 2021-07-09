@@ -451,9 +451,9 @@ Public Class EXO_CPPTO
                                     sSQL &= " ""U_EXO_ITEMNAME"",""U_EXO_DIV"",""U_EXO_CANTA"", ""U_EXO_PRECIO"", ""U_EXO_IMP"", ""U_EXO_PERIODO"", ""U_EXO_PAIS"", ""U_EXO_PROVINCIA"", ""U_EXO_COMERCIAL"") "
                                     sSQL &= " VALUES (" & iCode.ToString & ", '" & oRsLOG.Fields.Item("Code").Value.ToString & "'," & oRsLOG.Fields.Item("LineId").Value.ToString & ", 0, 'C', '" & sFecha & "'," & sHora & ","
                                     sSQL &= "'" & oRsLOG.Fields.Item("U_EXO_ITEMCODE").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_ITEMNAME").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_DIV").Value.ToString & "', "
-                                    sSQL &= oRsLOG.Fields.Item("U_EXO_CANTA").Value.ToString & ", " & oRsLOG.Fields.Item("U_EXO_PRECIO").Value.ToString & ", "
+                                    sSQL &= oRsLOG.Fields.Item("U_EXO_CANTA").Value.ToString & ", " & EXO_GLOBALES.DblNumberToText(objGlobal.compañia, oRsLOG.Fields.Item("U_EXO_PRECIO").Value.ToString, 2) & ", "
                                     Dim dPeriodo As Date = CDate(oRsLOG.Fields.Item("U_EXO_PERIODO").Value.ToString)
-                                    sSQL &= oRsLOG.Fields.Item("U_EXO_IMP").Value.ToString & ", '" & dPeriodo.Year.ToString("0000") & dPeriodo.Month.ToString("00") & dPeriodo.Day.ToString("00") & "', "
+                                    sSQL &= EXO_GLOBALES.DblNumberToText(objGlobal.compañia, oRsLOG.Fields.Item("U_EXO_IMP").Value.ToString, 2) & ", '" & dPeriodo.Year.ToString("0000") & dPeriodo.Month.ToString("00") & dPeriodo.Day.ToString("00") & "', "
                                     sSQL &= "'" & oRsLOG.Fields.Item("U_EXO_PAIS").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_PROVINCIA").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_COMERCIAL").Value.ToString & "')"
                                     oRsLOGADD.DoQuery(sSQL)
                                 Next

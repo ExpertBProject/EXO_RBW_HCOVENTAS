@@ -345,7 +345,7 @@ Public Class EXO_PPTOS
                         oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_ITEMNAME", oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").Offset, oRs.Fields.Item("U_EXO_ITEMNAME").Value.ToString)
                         oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_DIV", oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").Offset, oRs.Fields.Item("U_EXO_DIV").Value.ToString)
                         oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_CANTA", oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").Offset, oRs.Fields.Item("U_EXO_CANTA").Value.ToString)
-                        oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_CANTB", oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").Offset, oRs.Fields.Item("U_EXO_CANTB").Value.ToString)
+                        'oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_CANTB", oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").Offset, oRs.Fields.Item("U_EXO_CANTB").Value.ToString)
                         oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_PRECIO", oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").Offset, oRs.Fields.Item("U_EXO_PRECIO").Value.ToString)
                         oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").SetValue("U_EXO_IMP", oForm.DataSources.DBDataSources.Item("@EXO_PPTOSL").Offset, oRs.Fields.Item("U_EXO_IMP").Value.ToString)
                         Dim dFecha As Date = CDate(oRs.Fields.Item("U_EXO_PERIODO").Value.ToString)
