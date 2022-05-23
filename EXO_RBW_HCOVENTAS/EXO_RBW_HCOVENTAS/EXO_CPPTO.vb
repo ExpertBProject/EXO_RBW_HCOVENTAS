@@ -455,6 +455,7 @@ Public Class EXO_CPPTO
                                     Dim dPeriodo As Date = CDate(oRsLOG.Fields.Item("U_EXO_PERIODO").Value.ToString)
                                     sSQL &= EXO_GLOBALES.DblNumberToText(objGlobal.compañia, oRsLOG.Fields.Item("U_EXO_IMP").Value.ToString, 2) & ", '" & dPeriodo.Year.ToString("0000") & dPeriodo.Month.ToString("00") & dPeriodo.Day.ToString("00") & "', "
                                     sSQL &= "'" & oRsLOG.Fields.Item("U_EXO_PAIS").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_PROVINCIA").Value.ToString & "', '" & oRsLOG.Fields.Item("U_EXO_COMERCIAL").Value.ToString & "')"
+                                    objGlobal.SBOApp.StatusBar.SetText(sSQL, SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Warning)
                                     oRsLOGADD.DoQuery(sSQL)
                                 Next
                             Else
